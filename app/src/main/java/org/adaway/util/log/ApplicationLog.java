@@ -7,6 +7,7 @@ import android.content.pm.ApplicationInfo;
 import com.topjohnwu.superuser.Shell;
 
 import org.adaway.helper.PreferenceHelper;
+import org.adaway.util.AppExecutors;
 
 import timber.log.Timber;
 
@@ -29,13 +30,19 @@ public final class ApplicationLog {
      * @param application The application instance.
      */
     public static void init(Application application) {
-        if (isApplicationDebuggable(application) || PreferenceHelper.getDebugEnabled(application)) {
+        if (isApplicationDebuggable(application)) {
             Shell.enableVerboseLogging = true;
             Timber.plant(new Timber.DebugTree());
-        } else {
-            Shell.enableVerboseLogging = false;
-            SentryLog.init(application);
+            return;
         }
+        Shell.enableVerboseLogging = false;
+        SentryLog.init(application);
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            if (PreferenceHelper.getDebugEnabled(application)) {
+                Shell.enableVerboseLogging = true;
+                Timber.plant(new Timber.DebugTree());
+            }
+        });
     }
 
     private static boolean isApplicationDebuggable(Context context) {
