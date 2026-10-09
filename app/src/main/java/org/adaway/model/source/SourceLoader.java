@@ -7,6 +7,7 @@ import static org.adaway.util.Constants.BOGUS_IPV4;
 import static org.adaway.util.Constants.LOCALHOST_HOSTNAME;
 import static org.adaway.util.Constants.LOCALHOST_IPV4;
 import static org.adaway.util.Constants.LOCALHOST_IPV6;
+import static org.adaway.util.Constants.LOCALHOST_IPV6_HOSTNAME;
 
 import org.adaway.db.dao.HostListItemDao;
 import org.adaway.db.entity.HostListItem;
@@ -156,7 +157,9 @@ class SourceLoader {
             String hostname = matcher.group(2);
             assert hostname != null;
             // Skip localhost name
-            if (LOCALHOST_HOSTNAME.equals(hostname)) {
+            if (LOCALHOST_HOSTNAME.equals(hostname)
+                    || LOCALHOST_IPV6_HOSTNAME.equals(hostname)
+                    || "ip6-loopback".equals(hostname)) {
                 return null;
             }
             // check if ip is 127.0.0.1 or 0.0.0.0

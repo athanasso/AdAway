@@ -27,6 +27,7 @@ public class Constants {
     public static final String LOCALHOST_IPV6 = "::1";
     public static final String BOGUS_IPV4 = "0.0.0.0";
     public static final String LOCALHOST_HOSTNAME = "localhost";
+    public static final String LOCALHOST_IPV6_HOSTNAME = "ip6-localhost";
 
     public static final String HOSTS_FILENAME = "hosts";
     public static final String DEFAULT_HOSTS_FILENAME = "default_hosts";
