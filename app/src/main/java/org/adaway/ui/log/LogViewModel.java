@@ -16,12 +16,17 @@ import org.adaway.db.entity.HostListItem;
 import org.adaway.db.entity.ListType;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.model.adblocking.AdBlockModel;
+import org.adaway.model.error.HostErrorException;
+import org.adaway.model.source.SourceModel;
 import org.adaway.util.AppExecutors;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
+
+import timber.log.Timber;
 
 import static org.adaway.db.entity.HostsSource.USER_SOURCE_ID;
 
@@ -32,6 +37,7 @@ import static org.adaway.db.entity.HostsSource.USER_SOURCE_ID;
  */
 public class LogViewModel extends AndroidViewModel {
     private final AdBlockModel adBlockModel;
+    private final SourceModel sourceModel;
     private final HostListItemDao hostListItemDao;
     private final HostEntryDao hostEntryDao;
     private final MutableLiveData<List<LogEntry>> logEntries;
@@ -40,7 +46,9 @@ public class LogViewModel extends AndroidViewModel {
 
     public LogViewModel(@NonNull Application application) {
         super(application);
-        this.adBlockModel = ((AdAwayApplication) application).getAdBlockModel();
+        AdAwayApplication awayApplication = (AdAwayApplication) application;
+        this.adBlockModel = awayApplication.getAdBlockModel();
+        this.sourceModel = awayApplication.getSourceModel();
         this.hostListItemDao = AppDatabase.getInstance(application).hostsListItemDao();
         this.hostEntryDao = AppDatabase.getInstance(application).hostEntryDao();
         this.logEntries = new MutableLiveData<>();
@@ -69,6 +77,9 @@ public class LogViewModel extends AndroidViewModel {
                             .parallelStream()
                             .map(log -> {
                                 ListType type = this.hostEntryDao.getTypeOfHost(log);
+                                if (type == null) {
+                                    type = this.hostListItemDao.getTypeOfHost(log);
+                                }
                                 return new LogEntry(log, type);
                             })
                             .sorted(this.sort.comparator())
@@ -104,15 +115,37 @@ public class LogViewModel extends AndroidViewModel {
         item.setRedirection(redirection);
         item.setEnabled(true);
         item.setSourceId(USER_SOURCE_ID);
-        // Insert host list item
-        AppExecutors.getInstance().diskIO().execute(() -> this.hostListItemDao.insert(item));
+        // Insert or update host list item, sync host entries and apply
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            Optional<Integer> id = this.hostListItemDao.getHostId(host);
+            if (id.isPresent()) {
+                item.setId(id.get());
+                this.hostListItemDao.update(item);
+            } else {
+                this.hostListItemDao.insert(item);
+            }
+            try {
+                this.sourceModel.syncHostEntries();
+                this.adBlockModel.apply();
+            } catch (HostErrorException exception) {
+                Timber.w(exception, "Failed to apply ad block model after adding host: %s", host);
+            }
+        });
         // Update log entries
         updateLogEntryType(host, type);
     }
 
     public void removeListItem(@NonNull String host) {
-        // Delete host list item
-        AppExecutors.getInstance().diskIO().execute(() -> this.hostListItemDao.deleteUserFromHost(host));
+        // Delete host list item, sync host entries and apply
+        AppExecutors.getInstance().diskIO().execute(() -> {
+            this.hostListItemDao.deleteUserFromHost(host);
+            try {
+                this.sourceModel.syncHostEntries();
+                this.adBlockModel.apply();
+            } catch (HostErrorException exception) {
+                Timber.w(exception, "Failed to apply ad block model after removing host: %s", host);
+            }
+        });
         // Update log entries
         updateLogEntryType(host, null);
     }

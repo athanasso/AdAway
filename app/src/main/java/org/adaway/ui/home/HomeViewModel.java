@@ -10,6 +10,7 @@ import androidx.lifecycle.MutableLiveData;
 
 import org.adaway.AdAwayApplication;
 import org.adaway.db.AppDatabase;
+import org.adaway.db.dao.HostEntryDao;
 import org.adaway.db.dao.HostListItemDao;
 import org.adaway.db.dao.HostsSourceDao;
 import org.adaway.model.adblocking.AdBlockModel;
@@ -36,6 +37,7 @@ public class HomeViewModel extends AndroidViewModel {
 
     private final HostsSourceDao hostsSourceDao;
     private final HostListItemDao hostListItemDao;
+    private final HostEntryDao hostEntryDao;
 
     private final MutableLiveData<Boolean> pending;
     private final MediatorLiveData<String> state;
@@ -51,6 +53,7 @@ public class HomeViewModel extends AndroidViewModel {
         AppDatabase database = AppDatabase.getInstance(application);
         this.hostsSourceDao = database.hostsSourceDao();
         this.hostListItemDao = database.hostsListItemDao();
+        this.hostEntryDao = database.hostEntryDao();
 
         this.pending = new MutableLiveData<>(false);
         this.state = new MediatorLiveData<>();
@@ -59,13 +62,17 @@ public class HomeViewModel extends AndroidViewModel {
         this.error = new MutableLiveData<>();
     }
 
+    private AdBlockModel getAdBlockModel() {
+        return ((AdAwayApplication) getApplication()).getAdBlockModel();
+    }
+
     private static boolean isTrue(LiveData<Boolean> liveData) {
         Boolean value = liveData.getValue();
         return value != null && value;
     }
 
     public LiveData<Boolean> isAdBlocked() {
-        return this.adBlockModel.isApplied();
+        return getAdBlockModel().isApplied();
     }
 
     public LiveData<Boolean> isUpdateAvailable() {
@@ -123,10 +130,14 @@ public class HomeViewModel extends AndroidViewModel {
         EXECUTORS.diskIO().execute(() -> {
             try {
                 this.pending.postValue(true);
-                if (isTrue(this.adBlockModel.isApplied())) {
-                    this.adBlockModel.revert();
+                AdBlockModel model = getAdBlockModel();
+                if (isTrue(model.isApplied())) {
+                    model.revert();
                 } else {
-                    this.adBlockModel.apply();
+                    if (this.hostEntryDao.getAll().isEmpty()) {
+                        this.sourceModel.retrieveHostsSources();
+                    }
+                    model.apply();
                 }
             } catch (HostErrorException exception) {
                 Timber.w(exception, "Failed to toggle ad blocking.");
@@ -162,12 +173,31 @@ public class HomeViewModel extends AndroidViewModel {
             try {
                 this.pending.postValue(true);
                 this.sourceModel.retrieveHostsSources();
-                this.adBlockModel.apply();
+                getAdBlockModel().apply();
             } catch (HostErrorException exception) {
                 Timber.w(exception, "Failed to sync.");
                 this.error.postValue(exception.getError());
             } finally {
                 this.pending.postValue(false);
+            }
+        });
+    }
+
+    public void syncIfEmpty() {
+        EXECUTORS.networkIO().execute(() -> {
+            if (this.hostEntryDao.getAll().isEmpty()) {
+                try {
+                    this.pending.postValue(true);
+                    this.sourceModel.retrieveHostsSources();
+                    AdBlockModel model = getAdBlockModel();
+                    if (isTrue(model.isApplied())) {
+                        model.apply();
+                    }
+                } catch (HostErrorException exception) {
+                    Timber.w(exception, "Failed to fetch initial filters dynamically.");
+                } finally {
+                    this.pending.postValue(false);
+                }
             }
         });
     }

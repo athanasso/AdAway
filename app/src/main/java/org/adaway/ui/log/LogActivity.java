@@ -46,7 +46,6 @@ import org.adaway.databinding.LogActivityBinding;
 import org.adaway.databinding.LogRedirectDialogBinding;
 import org.adaway.db.entity.ListType;
 import org.adaway.helper.ThemeHelper;
-import org.adaway.ui.adblocking.ApplyConfigurationSnackbar;
 import org.adaway.ui.dialog.AlertDialogValidator;
 import org.adaway.util.Clipboard;
 import org.adaway.util.RegexUtils;
@@ -62,10 +61,6 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
      * The view model (<code>null</code> if activity is not created).
      */
     private LogViewModel mViewModel;
-    /**
-     * The snackbar notification (<code>null</code> if activity is not created).
-     */
-    private ApplyConfigurationSnackbar mApplySnackbar;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -114,11 +109,7 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
                         R.drawable.ic_record_24dp
                 )
         );
-        /*
-         * Configure snackbar.
-         */
-        // Create apply snackbar
-        this.mApplySnackbar = new ApplyConfigurationSnackbar(this.binding.swipeRefresh, false, false);
+
         /*
          * Load data.
          */
@@ -164,16 +155,14 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
 
     @Override
     public void addListItem(@NonNull String hostName, @NonNull ListType type) {
-        // Check view model and snackbar notification
-        if (this.mViewModel == null || this.mApplySnackbar == null) {
+        // Check view model
+        if (this.mViewModel == null) {
             return;
         }
         // Check type other than redirection
         if (type != ListType.REDIRECTED) {
             // Insert list item
             this.mViewModel.addListItem(hostName, type, null);
-            // Display snackbar notification
-            this.mApplySnackbar.notifyUpdateAvailable();
         } else {
             // Create dialog view
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -194,8 +183,6 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
                                 if (RegexUtils.isValidIP(ip)) {
                                     // Insert list item
                                     this.mViewModel.addListItem(hostName, type, ip);
-                                    // Display snackbar notification
-                                    this.mApplySnackbar.notifyUpdateAvailable();
                                 }
                             }
                     )
@@ -215,9 +202,8 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
 
     @Override
     public void removeListItem(@NonNull String hostName) {
-        if (this.mViewModel != null && this.mApplySnackbar != null) {
+        if (this.mViewModel != null) {
             this.mViewModel.removeListItem(hostName);
-            this.mApplySnackbar.notifyUpdateAvailable();
         }
     }
 

@@ -1,9 +1,11 @@
 # Changelog
 
-## [6.1.5] - Unreleased
+## [6.1.5] - 2026-10-09
 
 - Add always-on VPN detection during setup
 - Improve web signal handling and OOM killer
+- Immediately apply and persist host actions from DNS request log
+- Dynamically fetch initial filters at runtime
 - Update mongoose web server
 - Update Android gradle plugin
 - Update NDK

@@ -9,6 +9,7 @@ import androidx.room.Query;
 import androidx.room.Update;
 
 import org.adaway.db.entity.HostListItem;
+import org.adaway.db.entity.ListType;
 
 import java.util.List;
 import java.util.Optional;
@@ -48,6 +49,9 @@ public interface HostListItemDao {
 
     @Query("SELECT id FROM hosts_lists WHERE host = :host AND source_id = 1 LIMIT 1")
     Optional<Integer> getHostId(String host);
+
+    @Query("SELECT type FROM hosts_lists WHERE host = :host AND enabled = 1 ORDER BY source_id ASC LIMIT 1")
+    ListType getTypeOfHost(String host);
 
     @Query("SELECT COUNT(DISTINCT host) FROM hosts_lists WHERE type = 0 AND enabled = 1")
     LiveData<Integer> getBlockedHostCount();

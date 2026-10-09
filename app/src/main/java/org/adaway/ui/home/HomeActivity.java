@@ -143,6 +143,7 @@ public class HomeActivity extends AppCompatActivity {
         if (checkUpdateAtStartup) {
             this.homeViewModel.update();
         }
+        this.homeViewModel.syncIfEmpty();
     }
 
     private void applyActionBar() {
