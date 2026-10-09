@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.8] - 2026-10-10
+
+- Fix notification tray background discoloration by disabling notification colorization
+- Restore clean status bar and system bar background styling
+- Redesign dashboard cards with integrated iconography and clear typography hierarchy
+- Enhance header with rounded shape transitions and high-contrast text
+
 ## [6.1.7] - 2026-10-10
 
 - Migrate base themes to Material 3 DayNight

@@ -335,8 +335,11 @@ public class HomeActivity extends AppCompatActivity {
     }
 
     private void notifyAdBlocked(boolean adBlocked) {
-        int color = adBlocked ? getResources().getColor(R.color.primary, null) : Color.GRAY;
-        this.binding.content.headerFrameLayout.setBackgroundColor(color);
+        int color = adBlocked ? getResources().getColor(R.color.primary, null) : Color.parseColor("#455A64");
+        android.graphics.drawable.GradientDrawable shape = new android.graphics.drawable.GradientDrawable();
+        shape.setColor(color);
+        shape.setCornerRadii(new float[]{0, 0, 0, 0, 48, 48, 48, 48});
+        this.binding.content.headerFrameLayout.setBackground(shape);
         this.binding.fab.setImageResource(adBlocked ? R.drawable.ic_pause_24dp : R.drawable.logo);
     }
 

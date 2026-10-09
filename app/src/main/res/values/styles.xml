@@ -23,7 +23,9 @@
         <item name="colorSecondaryVariant">@color/primaryVariant</item>
         <item name="colorOnSecondary">@color/onPrimary</item>
 
-        <item name="android:statusBarColor">?colorPrimary</item>
+        <item name="android:statusBarColor">?android:attr/colorBackground</item>
+        <item name="android:navigationBarColor">?android:attr/colorBackground</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
     <style name="Theme.AdAway.NoActionBar.Red" parent="Theme.Material3.DayNight.NoActionBar">

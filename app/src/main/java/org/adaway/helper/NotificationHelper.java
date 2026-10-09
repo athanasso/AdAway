@@ -105,7 +105,7 @@ public final class NotificationHelper {
         PendingIntent pendingIntent = getActivity(context, 0, intent, FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, UPDATE_NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.logo)
-                .setColorized(true)
+                .setColorized(false)
                 .setColor(color)
                 .setShowWhen(false)
                 .setContentTitle(title)
@@ -137,7 +137,7 @@ public final class NotificationHelper {
         PendingIntent pendingIntent = getActivity(context, 0, intent, FLAG_IMMUTABLE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, UPDATE_NOTIFICATION_CHANNEL)
                 .setSmallIcon(R.drawable.logo)
-                .setColorized(true)
+                .setColorized(false)
                 .setColor(color)
                 .setShowWhen(false)
                 .setContentTitle(title)

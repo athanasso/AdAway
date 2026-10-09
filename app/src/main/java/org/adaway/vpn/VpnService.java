@@ -230,7 +230,7 @@ public class VpnService extends android.net.VpnService implements Handler.Callba
                 .setPriority(IMPORTANCE_LOW)
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.logo)
-                .setColorized(true)
+                .setColorized(false)
                 .setColor(getColor(R.color.notification))
                 .setContentTitle(title);
         switch (status) {
