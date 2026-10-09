@@ -2,6 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/athanasso/AdAway?logo=github)](https://github.com/athanasso/AdAway/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github)](https://github.com/athanasso/AdAway/releases)
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-athanasso-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/athanasso)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE.md)
 [![Upstream: AdAway/AdAway](https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg)](https://github.com/AdAway/AdAway)
 
@@ -109,7 +110,7 @@ If you are looking for translating the application in your language, [the transl
 ## Project Status & Credits
 
 This fork is maintained by:
-* Manos Athanassoglou ([@athanasso](https://github.com/athanasso)) - Fork maintainer
+* Manos Athanassoglou ([@athanasso](https://github.com/athanasso)) - Fork maintainer | [Buy Me a Coffee](https://buymeacoffee.com/athanasso)
 
 The upstream project is actively developed by:
 * Bruce Bujon ([@PerfectSlayer](https://github.com/PerfectSlayer)) - Developer  

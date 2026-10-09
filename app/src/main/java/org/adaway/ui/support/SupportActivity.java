@@ -34,6 +34,10 @@ public class SupportActivity extends AppCompatActivity {
      * The sponsorship link.
      */
     public static final Uri SPONSORSHIP_LINK = parse("https://github.com/sponsors/PerfectSlayer");
+    /**
+     * The fork maintainer Buy Me a Coffee link.
+     */
+    public static final Uri FORK_BMAC_LINK = parse("https://buymeacoffee.com/athanasso");
 
     public static void animateHeart(ImageView heartImageView) {
         PropertyValuesHolder growScaleX = PropertyValuesHolder.ofFloat(View.SCALE_X, 1F, 1.2F);
@@ -72,8 +76,13 @@ public class SupportActivity extends AppCompatActivity {
 
         ImageView heartImageView = findViewById(R.id.headerImageView);
         animateHeart(heartImageView);
+        bindBmac();
         bindPaypal();
         bindSponsorShip();
+    }
+
+    private void bindBmac() {
+        bindLink(this, findViewById(R.id.bmacCardView), FORK_BMAC_LINK);
     }
 
     private void bindPaypal() {

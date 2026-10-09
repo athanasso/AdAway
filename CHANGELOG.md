@@ -1,5 +1,11 @@
 # Changelog
 
+## [6.1.9] - 2026-10-10
+
+- Add Buy Me a Coffee support option for fork maintainer (@athanasso)
+- Distinctly attribute support buttons between fork maintainer and original author
+- Update project documentation and badges with donation links
+
 ## [6.1.8] - 2026-10-10
 
 - Fix notification tray background discoloration by disabling notification colorization

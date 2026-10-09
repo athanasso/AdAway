@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="support_title">Support</string>
-    <string name="support_sponsorship_button">Become a sponsor</string>
+    <string name="support_bmac_button">Support Fork Maintainer (Buy Me a Coffee)</string>
+    <string name="support_paypal_upstream_button">Support Original Author (PayPal)</string>
+    <string name="support_sponsorship_button">Support Original Author (GitHub)</string>
 </resources>

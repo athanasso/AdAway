@@ -47,10 +47,10 @@
         app:layout_constraintTop_toBottomOf="@+id/headerTextView" />
 
     <androidx.cardview.widget.CardView
-        android:id="@+id/paypalCardView"
+        android:id="@+id/bmacCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="24dp"
         app:cardCornerRadius="32dp"
         app:contentPaddingBottom="16dp"
         app:contentPaddingLeft="24dp"
@@ -61,11 +61,36 @@
         app:layout_constraintTop_toBottomOf="@+id/summaryTextView">
 
         <TextView
+            android:id="@+id/bmacTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawablePadding="8dp"
+            android:text="@string/support_bmac_button"
+            android:textAppearance="@style/TextAppearance.AppCompat.Large"
+            app:drawableStartCompat="@drawable/ic_coffee_24dp" />
+
+    </androidx.cardview.widget.CardView>
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/paypalCardView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        app:cardCornerRadius="32dp"
+        app:contentPaddingBottom="16dp"
+        app:contentPaddingLeft="24dp"
+        app:contentPaddingRight="24dp"
+        app:contentPaddingTop="16dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/bmacCardView">
+
+        <TextView
             android:id="@+id/paypalTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:drawablePadding="8dp"
-            android:text="@string/welcome_support_button"
+            android:text="@string/support_paypal_upstream_button"
             android:textAppearance="@style/TextAppearance.AppCompat.Large"
             app:drawableStartCompat="@drawable/paypal" />
 
@@ -75,7 +100,7 @@
         android:id="@+id/sponsorshipCardView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="32dp"
+        android:layout_marginTop="16dp"
         app:cardCornerRadius="32dp"
         app:contentPaddingBottom="16dp"
         app:contentPaddingLeft="24dp"
