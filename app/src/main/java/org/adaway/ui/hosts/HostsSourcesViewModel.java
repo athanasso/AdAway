@@ -35,4 +35,12 @@ public class HostsSourcesViewModel extends AndroidViewModel {
     public void toggleSourceEnabled(HostsSource source) {
         EXECUTOR.execute(() -> this.hostsSourceDao.toggleEnabled(source));
     }
+
+    public void insertSources(List<HostsSource> sources) {
+        EXECUTOR.execute(() -> {
+            for (HostsSource source : sources) {
+                this.hostsSourceDao.insert(source);
+            }
+        });
+    }
 }

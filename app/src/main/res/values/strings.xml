@@ -262,4 +262,11 @@
     <string name="permission_send_command_label">Send commands to AdAway</string>
     <string name="permission_send_command_description">Allow to send commands to AdAway like enabling or disabling the system-wide ad-blocking</string>
 
+    <!-- Curated Sources -->
+    <string name="source_dialog_add_title">Add hosts source</string>
+    <string name="source_dialog_add_custom">Custom URL or file</string>
+    <string name="source_dialog_add_presets">Curated blocklists…</string>
+    <string name="source_presets_title">Curated Blocklist Presets</string>
+    <string name="source_presets_added">Preset sources added</string>
+
 </resources>

@@ -94,9 +94,74 @@ public class HostsSourcesFragment extends Fragment implements HostsSourcesViewCa
         // Get floating action button
         FloatingActionButton button = view.findViewById(R.id.hosts_sources_add);
         // Set click listener to display menu add entry
-        button.setOnClickListener(actionButton -> startSourceEdition(null));
+        button.setOnClickListener(actionButton -> showAddSourceChoiceDialog());
         // Return fragment view
         return view;
+    }
+
+    private void showAddSourceChoiceDialog() {
+        CharSequence[] options = new CharSequence[]{
+                getString(R.string.source_dialog_add_custom),
+                getString(R.string.source_dialog_add_presets)
+        };
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.source_dialog_add_title)
+                .setItems(options, (dialog, which) -> {
+                    if (which == 0) {
+                        startSourceEdition(null);
+                    } else if (which == 1) {
+                        showCuratedPresetsDialog();
+                    }
+                })
+                .show();
+    }
+
+    private static class PresetInfo {
+        final String label;
+        final String url;
+        PresetInfo(String label, String url) {
+            this.label = label;
+            this.url = url;
+        }
+    }
+
+    private static final PresetInfo[] PRESETS = new PresetInfo[]{
+            new PresetInfo("Hâgezi Multi LIGHT", "https://raw.githubusercontent.com/hagezi/dns-blocklists/main/hosts/light.txt"),
+            new PresetInfo("OISD Basic", "https://small.oisd.nl"),
+            new PresetInfo("StevenBlack Unified", "https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts"),
+            new PresetInfo("AdGuard DNS Filter", "https://adguardteam.github.io/HostlistsRegistry/assets/filter_1.txt"),
+            new PresetInfo("Dan Pollock / Someonewhocares", "https://someonewhocares.org/hosts/zero/hosts")
+    };
+
+    private void showCuratedPresetsDialog() {
+        CharSequence[] items = new CharSequence[PRESETS.length];
+        boolean[] checked = new boolean[PRESETS.length];
+        for (int i = 0; i < PRESETS.length; i++) {
+            items[i] = PRESETS[i].label + "\n" + PRESETS[i].url;
+            checked[i] = true;
+        }
+
+        new com.google.android.material.dialog.MaterialAlertDialogBuilder(requireContext())
+                .setTitle(R.string.source_presets_title)
+                .setMultiChoiceItems(items, checked, (dialog, which, isChecked) -> checked[which] = isChecked)
+                .setPositiveButton(R.string.button_add, (dialog, which) -> {
+                    java.util.List<HostsSource> toAdd = new java.util.ArrayList<>();
+                    for (int i = 0; i < PRESETS.length; i++) {
+                        if (checked[i]) {
+                            HostsSource source = new HostsSource();
+                            source.setLabel(PRESETS[i].label);
+                            source.setUrl(PRESETS[i].url);
+                            source.setEnabled(true);
+                            toAdd.add(source);
+                        }
+                    }
+                    if (!toAdd.isEmpty()) {
+                        this.mViewModel.insertSources(toAdd);
+                        android.widget.Toast.makeText(requireContext(), R.string.source_presets_added, android.widget.Toast.LENGTH_SHORT).show();
+                    }
+                })
+                .setNegativeButton(R.string.button_cancel, null)
+                .show();
     }
 
     @Override
