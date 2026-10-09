@@ -2,6 +2,7 @@
 
 [![GitHub Release](https://img.shields.io/github/v/release/athanasso/AdAway?logo=github)](https://github.com/athanasso/AdAway/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github)](https://github.com/athanasso/AdAway/releases)
+[![Add to Obtainium](https://img.shields.io/badge/Obtainium-Add%20App-teal?logo=android&logoColor=white)](obtainium://app/https%3A%2F%2Fgithub.com%2Fathanasso%2FAdAway)
 [![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-athanasso-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/athanasso)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE.md)
 [![Upstream: AdAway/AdAway](https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg)](https://github.com/AdAway/AdAway)
@@ -50,6 +51,8 @@ For more information visit https://adaway.org
 ### Fork Releases (Recommended)
 
 Pre-built signed release APKs are available directly on [GitHub Releases](https://github.com/athanasso/AdAway/releases).
+
+[![Add to Obtainium](https://img.shields.io/badge/Obtainium-Add%20to%20App-teal?style=for-the-badge&logo=android&logoColor=white)](obtainium://app/https%3A%2F%2Fgithub.com%2Fathanasso%2FAdAway)
 
 ### Upstream Releases
 
