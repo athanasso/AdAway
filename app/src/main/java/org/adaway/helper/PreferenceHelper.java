@@ -30,8 +30,14 @@ import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.util.Constants;
 import org.adaway.vpn.VpnStatus;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
+import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
 import java.util.Set;
+
+import timber.log.Timber;
 
 public final class PreferenceHelper {
     private PreferenceHelper() {
@@ -357,5 +363,49 @@ public final class PreferenceHelper {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putStringSet(context.getString(R.string.pref_vpn_excluded_user_apps_key), excludedApplicationPackageNames);
         editor.apply();
+    }
+
+    public static List<InetAddress> getCustomDnsServers(Context context) {
+        SharedPreferences prefs = context.getSharedPreferences(
+                Constants.PREFS_NAME,
+                Context.MODE_PRIVATE
+        );
+        String provider = prefs.getString(
+                context.getString(R.string.pref_vpn_dns_provider_key),
+                "system"
+        );
+        List<InetAddress> servers = new ArrayList<>();
+        try {
+            switch (provider) {
+                case "cloudflare":
+                    servers.add(InetAddress.getByName("1.1.1.1"));
+                    servers.add(InetAddress.getByName("1.0.0.1"));
+                    return servers;
+                case "quad9":
+                    servers.add(InetAddress.getByName("9.9.9.9"));
+                    servers.add(InetAddress.getByName("149.112.112.112"));
+                    return servers;
+                case "adguard":
+                    servers.add(InetAddress.getByName("94.140.14.14"));
+                    servers.add(InetAddress.getByName("94.140.15.15"));
+                    return servers;
+                case "custom":
+                    String customIp = prefs.getString(
+                            context.getString(R.string.pref_vpn_custom_dns_ip_key),
+                            "1.1.1.1"
+                    );
+                    if (customIp != null && !customIp.trim().isEmpty()) {
+                        servers.add(InetAddress.getByName(customIp.trim()));
+                        return servers;
+                    }
+                    break;
+                case "system":
+                default:
+                    return Collections.emptyList();
+            }
+        } catch (UnknownHostException e) {
+            Timber.w(e, "Failed to resolve custom DNS provider %s", provider);
+        }
+        return Collections.emptyList();
     }
 }

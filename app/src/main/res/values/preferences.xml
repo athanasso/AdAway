@@ -67,4 +67,15 @@
     </string-array>
     <string name="pref_vpn_excluded_user_apps_key" translatable="false">excludeUserAppFromVpn</string>
     <string name="pref_vpn_excluded_user_apps_default" translatable="false" />
+    <string name="pref_vpn_dns_provider_key" translatable="false">vpnDnsProvider</string>
+    <string name="pref_vpn_dns_provider_default" translatable="false">system</string>
+    <string-array name="pref_vpn_dns_provider_values">
+        <item>system</item>
+        <item>cloudflare</item>
+        <item>quad9</item>
+        <item>adguard</item>
+        <item>custom</item>
+    </string-array>
+    <string name="pref_vpn_custom_dns_ip_key" translatable="false">vpnCustomDnsIp</string>
+    <string name="pref_vpn_custom_dns_ip_default" translatable="false">1.1.1.1</string>
 </resources>

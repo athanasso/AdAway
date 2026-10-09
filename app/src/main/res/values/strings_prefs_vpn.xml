@@ -21,4 +21,17 @@
     <string name="pref_vpn_exclude_user_apps_select_all">Select all</string>
     <string name="pref_vpn_exclude_user_apps_deselect_all">Deselect all</string>
     <string name="pref_vpn_exclude_user_apps_icon">Application icon</string>
+
+    <!-- Custom DNS -->
+    <string name="pref_vpn_custom_dns_category">Upstream DNS</string>
+    <string name="pref_vpn_dns_provider_title">DNS provider</string>
+    <string-array name="pref_vpn_dns_provider_entries">
+        <item>System default</item>
+        <item>Cloudflare (1.1.1.1)</item>
+        <item>Quad9 (9.9.9.9)</item>
+        <item>AdGuard DNS (94.140.14.14)</item>
+        <item>Custom DNS IP</item>
+    </string-array>
+    <string name="pref_vpn_custom_dns_ip_title">Custom DNS IPv4</string>
+    <string name="pref_vpn_custom_dns_ip_summary">IP address to route DNS queries to (e.g. 1.1.1.1)</string>
 </resources>

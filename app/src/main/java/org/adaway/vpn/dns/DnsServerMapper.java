@@ -73,8 +73,9 @@ public class DnsServerMapper {
      * @param builder The builder of the VPN to configure.
      */
     public void configureVpn(Context context, VpnService.Builder builder) {
-        // Get DNS servers
-        List<InetAddress> dnsServers = getNetworkDnsServers(context);
+        // Get DNS servers (custom upstream if configured, otherwise fallback to network DNS)
+        List<InetAddress> customDnsServers = PreferenceHelper.getCustomDnsServers(context);
+        List<InetAddress> dnsServers = !customDnsServers.isEmpty() ? customDnsServers : getNetworkDnsServers(context);
         // Configure tunnel network address
         Subnet ipv4Subnet = addIpv4Address(builder);
         Subnet ipv6Subnet = hasIpV6DnsServers(context, dnsServers) ? addIpv6Address(builder) : null;
