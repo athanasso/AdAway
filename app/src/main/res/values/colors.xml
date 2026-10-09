@@ -3,7 +3,7 @@
     <!-- Material theming light theme -->
     <color name="primary">#ef5350</color>
     <color name="primaryVariant">#e53935</color>
-    <color name="onPrimary">#000000</color>
+    <color name="onPrimary">#ffffff</color>
     <!-- App icon colors -->
     <color name="drawer_icon">#B71C1C</color>
     <!-- Host list state -->

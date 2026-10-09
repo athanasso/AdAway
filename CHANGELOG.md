@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.1.7] - 2026-10-10
+
+- Migrate base themes to Material 3 DayNight
+- Enable Android 12+ Material You DynamicColors
+- Modernize home dashboard cards with 16dp rounded corners and subtle elevation
+- Improve color contrast and accessibility on light theme palette
+
 ## [6.1.6] - 2026-10-09
 
 - Add real-time domain search to DNS request log

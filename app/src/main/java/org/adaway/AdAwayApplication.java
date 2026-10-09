@@ -2,6 +2,8 @@ package org.adaway;
 
 import android.app.Application;
 
+import com.google.android.material.color.DynamicColors;
+
 import org.adaway.helper.NotificationHelper;
 import org.adaway.helper.PreferenceHelper;
 import org.adaway.model.adblocking.AdBlockMethod;
@@ -33,6 +35,8 @@ public class AdAwayApplication extends Application {
     public void onCreate() {
         // Delegate application creation
         super.onCreate();
+        // Apply Material You dynamic colors if supported
+        DynamicColors.applyToActivitiesIfAvailable(this);
         // Initialize logging
         ApplicationLog.init(this);
         // Create notification channels

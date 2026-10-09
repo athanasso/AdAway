@@ -3,7 +3,7 @@
 
     <style name="Theme.AdAway" parent="Base.AdAway" />
 
-    <style name="Base.AdAway" parent="Theme.MaterialComponents.DayNight">
+    <style name="Base.AdAway" parent="Theme.Material3.DayNight">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
@@ -15,7 +15,7 @@
         <item name="colorPrimaryDark">?colorPrimary</item>
     </style>
 
-    <style name="Theme.AdAway.NoActionBar" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <style name="Theme.AdAway.NoActionBar" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/primary</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
@@ -26,7 +26,7 @@
         <item name="android:statusBarColor">?colorPrimary</item>
     </style>
 
-    <style name="Theme.AdAway.NoActionBar.Red" parent="Theme.MaterialComponents.NoActionBar">
+    <style name="Theme.AdAway.NoActionBar.Red" parent="Theme.Material3.DayNight.NoActionBar">
         <item name="colorPrimary">@color/welcomeBackground</item>
         <item name="colorPrimaryVariant">@color/primaryVariant</item>
         <item name="colorOnPrimary">@color/onPrimary</item>
