@@ -1,5 +1,13 @@
 # Changelog
 
+## [6.1.6] - 2026-10-09
+
+- Add real-time domain search to DNS request log
+- Enable parent-domain and subdomain wildcard matching in VPN mode
+- Add launcher shortcuts with backstack navigation and hosts sources shortcut
+- Add export and share action for DNS request logs
+- Optimize Application.onCreate to avoid synchronous SharedPreferences read on main thread
+
 ## [6.1.5] - 2026-10-09
 
 - Add always-on VPN detection during setup
