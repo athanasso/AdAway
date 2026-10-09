@@ -200,12 +200,16 @@ public class VpnWorker implements DnsPacketProxy.EventLoop {
         byte[] packet = new byte[MAX_PACKET_SIZE];
 
         // Authenticate and configure the virtual network interface.
-        try (ParcelFileDescriptor pfd = establish(this.vpnService, this.dnsServerMapper);
+        ParcelFileDescriptor pfd = establish(this.vpnService, this.dnsServerMapper);
+        if (pfd == null) {
+            throw new VpnNetworkException("Failed to establish VPN interface (another VPN is active or permission was revoked)");
+        }
+        try (ParcelFileDescriptor autoClosePfd = pfd;
              // Read and write views of the tunnel device
-             FileInputStream inputStream = new FileInputStream(pfd.getFileDescriptor());
-             FileOutputStream outputStream = new FileOutputStream(pfd.getFileDescriptor())) {
+             FileInputStream inputStream = new FileInputStream(autoClosePfd.getFileDescriptor());
+             FileOutputStream outputStream = new FileOutputStream(autoClosePfd.getFileDescriptor())) {
             // Store reference to network interface to close it externally on demand
-            this.vpnNetworkInterface.set(pfd);
+            this.vpnNetworkInterface.set(autoClosePfd);
             // Initialize connection monitor
             this.connectionMonitor.initialize();
 
