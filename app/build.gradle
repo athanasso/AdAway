@@ -126,10 +126,10 @@ dependencies {
     if (keyStoreDefined) {
         implementation project(':sentrystub')
     } else {
-        implementation platform('io.sentry:sentry-bom:7.8.0')
-        implementation('io.sentry:sentry-android')
-        implementation('io.sentry:sentry-android-fragment')
-        implementation('io.sentry:sentry-android-timber')
+        implementation platform(libs.sentry.bom)
+        implementation libs.sentry.android
+        implementation libs.sentry.android.fragment
+        implementation libs.sentry.android.timber
     }
 
     // Root related
