@@ -43,6 +43,8 @@ public class LogViewModel extends AndroidViewModel {
     private final MutableLiveData<List<LogEntry>> logEntries;
     private final MutableLiveData<Boolean> recording;
     private LogEntrySort sort;
+    private List<LogEntry> allLogs = Collections.emptyList();
+    private String filterQuery = "";
 
     public LogViewModel(@NonNull Application application) {
         super(application);
@@ -66,6 +68,7 @@ public class LogViewModel extends AndroidViewModel {
 
     public void clearLogs() {
         this.adBlockModel.clearLogs();
+        this.allLogs = Collections.emptyList();
         this.logEntries.postValue(Collections.emptyList());
     }
 
@@ -85,7 +88,8 @@ public class LogViewModel extends AndroidViewModel {
                             .sorted(this.sort.comparator())
                             .collect(Collectors.toList());
                     // Post result
-                    this.logEntries.postValue(logItems);
+                    this.allLogs = logItems;
+                    applyFilter();
                 }
         );
     }
@@ -150,29 +154,38 @@ public class LogViewModel extends AndroidViewModel {
         updateLogEntryType(host, null);
     }
 
-    private void updateLogEntryType(@NonNull String host, ListType type) {
-        // Get current values
-        List<LogEntry> entries = this.logEntries.getValue();
-        if (entries == null) {
-            return;
+    public void setFilterQuery(String query) {
+        this.filterQuery = query == null ? "" : query.trim().toLowerCase();
+        applyFilter();
+    }
+
+    private void applyFilter() {
+        if (this.filterQuery.isEmpty()) {
+            this.logEntries.postValue(this.allLogs);
+        } else {
+            List<LogEntry> filtered = this.allLogs.stream()
+                    .filter(entry -> entry.getHost().toLowerCase().contains(this.filterQuery))
+                    .collect(Collectors.toList());
+            this.logEntries.postValue(filtered);
         }
-        // Update entry type
-        List<LogEntry> updatedEntries = entries.stream()
+    }
+
+    private void updateLogEntryType(@NonNull String host, ListType type) {
+        this.allLogs = this.allLogs.stream()
                 .map(entry -> entry.getHost().equals(host) ? new LogEntry(host, type) : entry)
                 .collect(Collectors.toList());
-        // Post new values
-        this.logEntries.postValue(updatedEntries);
+        applyFilter();
     }
 
     private void sortDnsRequests(LogEntrySort sort) {
         // Save current sort
         this.sort = sort;
         // Apply sort to values
-        List<LogEntry> entries = this.logEntries.getValue();
-        if (entries != null) {
-            List<LogEntry> sortedEntries = new ArrayList<>(entries);
+        if (!this.allLogs.isEmpty()) {
+            List<LogEntry> sortedEntries = new ArrayList<>(this.allLogs);
             sortedEntries.sort(this.sort.comparator());
-            this.logEntries.postValue(sortedEntries);
+            this.allLogs = sortedEntries;
+            applyFilter();
         }
         // Notify user
         Toast.makeText(
