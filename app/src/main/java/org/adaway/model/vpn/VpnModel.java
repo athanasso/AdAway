@@ -3,8 +3,13 @@ package org.adaway.model.vpn;
 import static org.adaway.model.adblocking.AdBlockMethod.VPN;
 import static org.adaway.model.error.HostError.ENABLE_VPN_FAIL;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.util.LruCache;
+
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.adaway.R;
 import org.adaway.db.AppDatabase;
@@ -13,8 +18,11 @@ import org.adaway.db.entity.HostEntry;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.model.adblocking.AdBlockModel;
 import org.adaway.model.error.HostErrorException;
+import org.adaway.vpn.VpnService;
 import org.adaway.vpn.VpnServiceControls;
+import org.adaway.vpn.VpnStatus;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -52,6 +60,16 @@ public class VpnModel extends AdBlockModel {
         this.recordingLogs = false;
         this.requestCount = 0;
         this.applied.postValue(VpnServiceControls.isRunning(context));
+        LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                Serializable extra = intent.getSerializableExtra(VpnService.VPN_UPDATE_STATUS_EXTRA);
+                if (extra instanceof VpnStatus) {
+                    VpnStatus status = (VpnStatus) extra;
+                    applied.postValue(status == VpnStatus.RUNNING);
+                }
+            }
+        }, new IntentFilter(VpnService.VPN_UPDATE_STATUS_INTENT));
     }
 
     @Override
