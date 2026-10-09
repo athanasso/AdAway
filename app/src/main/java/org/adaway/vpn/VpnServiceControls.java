@@ -68,12 +68,17 @@ public final class VpnServiceControls {
         // Start the VPN service
         Intent intent = new Intent(context, VpnService.class);
         START.appendToIntent(intent);
-        boolean started = context.startForegroundService(intent) != null;
-        if (started) {
-            // Start the heartbeat
-            VpnServiceHeartbeat.start(context);
+        try {
+            boolean started = context.startForegroundService(intent) != null;
+            if (started) {
+                // Start the heartbeat
+                VpnServiceHeartbeat.start(context);
+            }
+            return started;
+        } catch (IllegalStateException e) {
+            timber.log.Timber.w(e, "Failed to start VPN foreground service.");
+            return false;
         }
-        return started;
     }
 
     /**
