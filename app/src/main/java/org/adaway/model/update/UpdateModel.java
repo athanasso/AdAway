@@ -12,6 +12,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 
+import androidx.core.content.ContextCompat;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
 
@@ -162,7 +163,7 @@ public class UpdateModel {
         long downloadId = download(manifest);
         // Register new broadcast receiver
         this.receiver = new ApkDownloadReceiver(downloadId);
-        this.context.registerReceiver(this.receiver, new IntentFilter(ACTION_DOWNLOAD_COMPLETE));
+        ContextCompat.registerReceiver(this.context, this.receiver, new IntentFilter(ACTION_DOWNLOAD_COMPLETE), ContextCompat.RECEIVER_EXPORTED);
         // Return download identifier
         return downloadId;
     }
