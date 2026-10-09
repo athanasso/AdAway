@@ -14,7 +14,9 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import org.adaway.R;
 import org.adaway.db.AppDatabase;
 import org.adaway.db.dao.HostEntryDao;
+import org.adaway.db.dao.HostListItemDao;
 import org.adaway.db.entity.HostEntry;
+import org.adaway.db.entity.ListType;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.model.adblocking.AdBlockModel;
 import org.adaway.model.error.HostErrorException;
@@ -36,6 +38,7 @@ import timber.log.Timber;
  */
 public class VpnModel extends AdBlockModel {
     private final HostEntryDao hostEntryDao;
+    private final HostListItemDao hostListItemDao;
     private final LruCache<String, HostEntry> blockCache;
     private final LinkedHashSet<String> logs;
     private boolean recordingLogs;
@@ -50,6 +53,7 @@ public class VpnModel extends AdBlockModel {
         super(context);
         AppDatabase database = AppDatabase.getInstance(context);
         this.hostEntryDao = database.hostEntryDao();
+        this.hostListItemDao = database.hostsListItemDao();
         this.blockCache = new LruCache<String, HostEntry>(4 * 1024) {
             @Override
             protected HostEntry create(String key) {
@@ -136,7 +140,33 @@ public class VpnModel extends AdBlockModel {
         if (this.recordingLogs) {
             this.logs.add(host);
         }
-        // Check cache
-        return this.blockCache.get(host);
+        if (host == null) {
+            return null;
+        }
+        // Check exact match in cache
+        HostEntry entry = this.blockCache.get(host);
+        if (entry != null) {
+            return entry;
+        }
+        // If host was explicitly allowed, do not block subdomains
+        if (this.hostListItemDao.getTypeOfHost(host) == ListType.ALLOWED) {
+            return null;
+        }
+        // Check parent domains for wildcard/subdomain matching
+        int lastDotIndex = host.lastIndexOf('.');
+        int dotIndex = host.indexOf('.');
+        while (dotIndex != -1 && dotIndex < lastDotIndex) {
+            String parent = host.substring(dotIndex + 1);
+            if (this.hostListItemDao.getTypeOfHost(parent) == ListType.ALLOWED) {
+                break;
+            }
+            HostEntry parentEntry = this.blockCache.get(parent);
+            if (parentEntry != null) {
+                this.blockCache.put(host, parentEntry);
+                return parentEntry;
+            }
+            dotIndex = host.indexOf('.', dotIndex + 1);
+        }
+        return null;
     }
 }
