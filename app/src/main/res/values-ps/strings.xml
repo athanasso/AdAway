@@ -164,9 +164,12 @@
 
     <!-- !!! Attention, always translate all items from this array !!! - Drawer menu items -->
     <string-array name="drawer_items">
+        <item>Home</item>
         <item>کوربه سرچينې</item>
         <item>ستاسې لړونه</item>
         <item>د کوربانه دوتنه پرانیځئ</item>
+        <item>Log DNS requests</item>
+        <item>Scan for adware</item>
         <item>غورتياوې</item>
         <item>مرسته</item>
     </string-array>
