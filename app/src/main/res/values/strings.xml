@@ -253,6 +253,7 @@
     <string name="vpn_notification_stopped">stopped</string>
     <string name="vpn_notification_title">Ad-blocker VPN %1$s</string>
     <string name="vpn_notification_action_pause">Pause</string>
+    <string name="vpn_notification_action_pause_5m">Pause 5m</string>
     <string name="vpn_notification_action_resume">Resume</string>
 
     <!-- Permission -->

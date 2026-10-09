@@ -19,6 +19,10 @@ public enum Command {
      */
     STOP,
     /**
+     * Pause the ad-blocking for 5 minutes.
+     */
+    PAUSE_5MIN,
+    /**
      * Unknown command.
      */
     UNKNOWN;

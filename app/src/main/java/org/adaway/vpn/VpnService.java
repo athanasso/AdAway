@@ -22,6 +22,7 @@ import static android.content.Intent.FLAG_ACTIVITY_NEW_TASK;
 import static android.content.pm.PackageManager.PERMISSION_GRANTED;
 import static android.net.NetworkCapabilities.TRANSPORT_CELLULAR;
 import static android.net.NetworkCapabilities.TRANSPORT_WIFI;
+import static org.adaway.broadcast.Command.PAUSE_5MIN;
 import static org.adaway.broadcast.Command.START;
 import static org.adaway.broadcast.Command.STOP;
 import static org.adaway.broadcast.CommandReceiver.SEND_COMMAND_ACTION;
@@ -89,6 +90,7 @@ public class VpnService extends android.net.VpnService implements Handler.Callba
      */
     private static final int REQUEST_CODE_START = 43;
     private static final int REQUEST_CODE_PAUSE = 42;
+    private static final int REQUEST_CODE_PAUSE_5MIN = 45;
     /*
      * Handler related.
      */
@@ -226,12 +228,16 @@ public class VpnService extends android.net.VpnService implements Handler.Callba
         intent.setFlags(FLAG_ACTIVITY_NEW_TASK | FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent contentIntent = PendingIntent.getActivity(getApplicationContext(), 0, intent, FLAG_IMMUTABLE);
 
+        int notificationColor = (status == RUNNING)
+                ? getColor(R.color.notification)
+                : getColor(R.color.notification_paused);
+
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, VPN_SERVICE_NOTIFICATION_CHANNEL)
                 .setPriority(IMPORTANCE_LOW)
                 .setContentIntent(contentIntent)
                 .setSmallIcon(R.drawable.logo)
                 .setColorized(false)
-                .setColor(getColor(R.color.notification))
+                .setColor(notificationColor)
                 .setContentTitle(title);
         switch (status) {
             case RUNNING:
@@ -243,6 +249,16 @@ public class VpnService extends android.net.VpnService implements Handler.Callba
                         R.drawable.ic_pause_24dp,
                         getString(R.string.vpn_notification_action_pause),
                         stopActionIntent
+                );
+
+                Intent pause5Intent = new Intent(this, CommandReceiver.class)
+                        .setAction(SEND_COMMAND_ACTION);
+                PAUSE_5MIN.appendToIntent(pause5Intent);
+                PendingIntent pause5ActionIntent = PendingIntent.getBroadcast(this, REQUEST_CODE_PAUSE_5MIN, pause5Intent, FLAG_IMMUTABLE);
+                builder.addAction(
+                        R.drawable.ic_pause_24dp,
+                        getString(R.string.vpn_notification_action_pause_5m),
+                        pause5ActionIntent
                 ).setOngoing(true);
                 break;
             case STOPPED:
