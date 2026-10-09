@@ -16,18 +16,23 @@ import org.adaway.db.AppDatabase;
 import org.adaway.db.dao.HostEntryDao;
 import org.adaway.db.dao.HostListItemDao;
 import org.adaway.db.entity.HostEntry;
+import org.adaway.db.entity.HostListItem;
 import org.adaway.db.entity.ListType;
 import org.adaway.model.adblocking.AdBlockMethod;
 import org.adaway.model.adblocking.AdBlockModel;
 import org.adaway.model.error.HostErrorException;
+import org.adaway.util.AppExecutors;
+import org.adaway.util.RegexUtils;
 import org.adaway.vpn.VpnService;
 import org.adaway.vpn.VpnServiceControls;
 import org.adaway.vpn.VpnStatus;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.regex.Pattern;
 
 import timber.log.Timber;
 
@@ -37,10 +42,23 @@ import timber.log.Timber;
  * @author Bruce BUJON (bruce.bujon(at)gmail(dot)com)
  */
 public class VpnModel extends AdBlockModel {
+    private static class CompiledWildcardRule {
+        final Pattern pattern;
+        final ListType type;
+        final String redirection;
+
+        CompiledWildcardRule(Pattern pattern, ListType type, String redirection) {
+            this.pattern = pattern;
+            this.type = type;
+            this.redirection = redirection;
+        }
+    }
+
     private final HostEntryDao hostEntryDao;
     private final HostListItemDao hostListItemDao;
     private final LruCache<String, HostEntry> blockCache;
     private final LinkedHashSet<String> logs;
+    private volatile List<CompiledWildcardRule> wildcardRules = Collections.emptyList();
     private boolean recordingLogs;
     private int requestCount;
 
@@ -74,6 +92,7 @@ public class VpnModel extends AdBlockModel {
                 }
             }
         }, new IntentFilter(VpnService.VPN_UPDATE_STATUS_INTENT));
+        AppExecutors.getInstance().diskIO().execute(this::reloadWildcardRules);
     }
 
     @Override
@@ -85,6 +104,7 @@ public class VpnModel extends AdBlockModel {
     public void apply() throws HostErrorException {
         // Clear cache
         this.blockCache.evictAll();
+        reloadWildcardRules();
         // Start VPN
         boolean started = VpnServiceControls.start(this.context);
         this.applied.postValue(started);
@@ -167,6 +187,36 @@ public class VpnModel extends AdBlockModel {
             }
             dotIndex = host.indexOf('.', dotIndex + 1);
         }
+
+        // Check compiled wildcard rules (* and ? patterns)
+        for (CompiledWildcardRule rule : this.wildcardRules) {
+            if (rule.pattern.matcher(host).matches()) {
+                if (rule.type == ListType.ALLOWED) {
+                    return null;
+                }
+                HostEntry wildcardEntry = new HostEntry();
+                wildcardEntry.setHost(host);
+                wildcardEntry.setType(rule.type);
+                wildcardEntry.setRedirection(rule.redirection);
+                this.blockCache.put(host, wildcardEntry);
+                return wildcardEntry;
+            }
+        }
         return null;
+    }
+
+    public void reloadWildcardRules() {
+        List<HostListItem> rules = this.hostListItemDao.getWildcardRules();
+        List<CompiledWildcardRule> compiled = new ArrayList<>();
+        for (HostListItem item : rules) {
+            try {
+                String regex = RegexUtils.wildcardToRegex(item.getHost());
+                Pattern p = Pattern.compile(regex, Pattern.CASE_INSENSITIVE);
+                compiled.add(new CompiledWildcardRule(p, item.getType(), item.getRedirection()));
+            } catch (Exception e) {
+                Timber.w(e, "Failed to compile wildcard rule %s", item.getHost());
+            }
+        }
+        this.wildcardRules = compiled;
     }
 }

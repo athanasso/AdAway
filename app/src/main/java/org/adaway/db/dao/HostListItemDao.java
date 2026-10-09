@@ -64,4 +64,7 @@ public interface HostListItemDao {
 
     @Query("DELETE FROM hosts_lists WHERE source_id = :sourceId")
     void clearSourceHosts(int sourceId);
+
+    @Query("SELECT * FROM hosts_lists WHERE (host LIKE '%*%' OR host LIKE '%?%') AND enabled = 1")
+    List<HostListItem> getWildcardRules();
 }
