@@ -63,7 +63,7 @@ public class HomeActivity extends AppCompatActivity {
     /**
      * The project link.
      */
-    private static final String PROJECT_LINK = "https://github.com/AdAway/AdAway";
+    private static final String PROJECT_LINK = "https://github.com/athanasso/AdAway";
 
     private HomeActivityBinding binding;
     private BottomSheetBehavior<View> drawerBehavior;

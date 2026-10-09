@@ -1,12 +1,26 @@
-# ![AdAway logo](app/src/main/res/mipmap-mdpi/icon.png) AdAway
+# ![AdAway logo](app/src/main/res/mipmap-mdpi/icon.png) AdAway (Fork by @athanasso)
 
-[![Build Status](https://github.com/adaway/adaway/actions/workflows/android-ci.yml/badge.svg)](https://github.com/AdAway/AdAway/actions/workflows/android-ci.yml) 
-[![Sonarcloud Status](https://sonarcloud.io/api/project_badges/measure?project=org.adaway&metric=security_rating)](https://sonarcloud.io/project/overview?id=org.adaway)
-[![GitHub Downloads](https://img.shields.io/github/downloads/adaway/adaway/total?logo=github)](https://github.com/AdAway/AdAway/releases)
-[![GitHub Sponsors](https://img.shields.io/github/sponsors/perfectslayer?logo=github)](https://github.com/sponsors/PerfectSlayer)
+[![GitHub Release](https://img.shields.io/github/v/release/athanasso/AdAway?logo=github)](https://github.com/athanasso/AdAway/releases)
+[![GitHub Downloads](https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github)](https://github.com/athanasso/AdAway/releases)
 [![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE.md)
+[![Upstream: AdAway/AdAway](https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg)](https://github.com/AdAway/AdAway)
+
+> [!NOTE]
+> **Fork Notice (October 2026):**
+> This repository is an independent fork of the official [AdAway](https://github.com/AdAway/AdAway) project, maintained by [@athanasso](https://github.com/athanasso).
+> In compliance with the GNU General Public License v3 (§5a), this modified version documents key enhancements and fixes applied on top of upstream AdAway.
 
 AdAway is an open source ad blocker for Android using the hosts file and local vpn.
+
+### Fork Enhancements & Fixes
+
+- **Dynamic Filter Download**: Bundled `hosts.txt` asset removed. Rules are downloaded dynamically on startup or when the source list is empty, reducing APK bloat and guaranteeing up-to-date hosts.
+- **Instant DNS Log Blocking**: Tapping "Block" in the DNS request log now persists immediately to user block rules and applies immediately without delays.
+- **Android 14+ Receiver Compatibility**: Fixed download complete `BroadcastReceiver` registration by explicitly specifying `RECEIVER_EXPORTED` on API 34+.
+- **VPN State Broadcast Sync**: Added `VpnStatusBroadcastReceiver` to `VpnModel` so the home UI reflects active VPN state changes in real time.
+- **Watchdog Timeout Reliability**: Only handle VPN watchdog timeouts when unresolved DNS queries or pending writes are actively queued.
+- **Pashto Localization Fix**: Aligned `drawer_items` string array length in `values-ps` to prevent runtime crashes.
+- **Version Catalog Modernization**: Migrated Sentry Android SDK dependencies into `libs.versions.toml`.
 
 [<img src="metadata/en-US/phoneScreenshots/screenshot1.png"
     alt="Home screen"
@@ -27,6 +41,12 @@ AdAway is an open source ad blocker for Android using the hosts file and local v
 For more information visit https://adaway.org
 
 ## Installing
+
+### Fork Releases (Recommended)
+
+Pre-built signed release APKs are available directly on [GitHub Releases](https://github.com/athanasso/AdAway/releases).
+
+### Upstream Releases
 
 There are two kinds of release:
 * The preview builds: on the bleeding edge of development - for testers or adventurous
@@ -72,7 +92,8 @@ Add the ones you like to the AdAway "Hosts sources" section.
 
 ## Getting Help
 
-You can post [Issues](https://github.com/AdAway/AdAway/issues) here or obtain more detailed community support via the [XDA developer thread](http://forum.xda-developers.com/showthread.php?t=2190753).
+For issues specific to this fork, please open an issue on [athanasso/AdAway Issues](https://github.com/athanasso/AdAway/issues).
+For upstream discussions, you can post [Upstream Issues](https://github.com/AdAway/AdAway/issues) or obtain community support via the [XDA developer thread](http://forum.xda-developers.com/showthread.php?t=2190753).
 
 ## Contributing
 
@@ -81,9 +102,12 @@ Check [the contributing guide](CONTRIBUTING.md) to learn how to report bugs, sug
 
 If you are looking for translating the application in your language, [the translating guide](TRANSLATING.md) is for you.
 
-## Project Status
+## Project Status & Credits
 
-AdAway is actively developed by:
+This fork is maintained by:
+* Manos Athanassoglou ([@athanasso](https://github.com/athanasso)) - Fork maintainer
+
+The upstream project is actively developed by:
 * Bruce Bujon ([@PerfectSlayer](https://github.com/PerfectSlayer)) - Developer  
 [PayPal](https://paypal.me/BruceBUJON) | [GitHub Sponsorship](https://github.com/sponsors/PerfectSlayer)
 * Daniel Mönch ([@Vankog](https://github.com/Vankog)) - Translations
