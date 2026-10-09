@@ -16,14 +16,16 @@ AdAway Enhanced is an open source ad blocker for Android using the hosts file an
 
 ### Key Fork Enhancements & Features
 
+- **Custom Upstream DNS**: Pick your preferred DNS resolver in VPN mode (Cloudflare 1.1.1.1, Quad9 9.9.9.9, AdGuard DNS, or custom IP address).
+- **Curated Blocklist Presets**: Built-in 1-tap blocklist catalog in Sources (Hâgezi Multi Light, OISD, StevenBlack, AdGuard DNS filter, Dan Pollock).
+- **Temporary Snooze & Notification Color Fix**: 5-minute pause action in notification with automatic resumption alarm; status-aware notification tinting (green when active, amber when paused).
+- **1-Tap DNS Log Quick Actions**: Tap any DNS log entry for quick Block/Allow dialog and instant undo snackbar feedback.
+- **Subdomain & Wildcard VPN Matching**: Full support for wildcard patterns (`*` and `?`) and parent domain matching in VPN mode.
 - **Material 3 Modernized UI**: Clean rounded card layout, integrated metrics iconography, high-contrast typography, and seamless status bar styling.
 - **Real-Time DNS Log Search**: Search bar filter in DNS Request Log activity with instant matching across domain names.
-- **Subdomain & Wildcard VPN Matching**: Parent domain hierarchical traversal for wildcard rule evaluation in VPN mode while respecting explicit allowlists.
 - **DNS Request Log Export**: One-tap share and export action in DNS log to easily pipe domains to blocklists or clipboard.
 - **Launcher App Shortcuts with Back Stack**: Quick-access app launcher shortcuts (DNS Logs, Your Lists, Hosts Sources, Preferences) with proper backstack navigation.
-- **Clean Notification Tray**: Disabled intrusive notification card colorization for a clean, non-discolored notification tray appearance.
-- **Dynamic Filter Download**: Bundled `hosts.txt` asset removed. Rules are downloaded dynamically on startup or when the source list is empty, reducing APK bloat and guaranteeing up-to-date hosts.
-- **Instant DNS Log Blocking**: Tapping "Block" in the DNS request log now persists immediately to user block rules and applies immediately without delays.
+- **Dynamic Filter Download**: Bundled `hosts.txt` asset removed. Rules are downloaded dynamically on startup, guaranteeing up-to-date hosts.
 - **Android 14+ Receiver Compatibility**: Fixed download complete `BroadcastReceiver` registration by explicitly specifying `RECEIVER_EXPORTED` on API 34+.
 - **VPN State Broadcast Sync**: Added `VpnStatusBroadcastReceiver` to `VpnModel` so the home UI reflects active VPN state changes in real time.
 - **Performance Optimization**: Eliminated synchronous SharedPreferences disk reads from Application.onCreate on the main thread.

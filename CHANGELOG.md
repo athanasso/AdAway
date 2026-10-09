@@ -1,5 +1,14 @@
 # Changelog
 
+## [6.2.0] - 2026-10-10
+
+- Add custom upstream DNS provider selection in VPN mode (Cloudflare, Quad9, AdGuard DNS, or custom IPv4 address)
+- Add curated blocklist presets catalog in Sources screen with 1-tap multi-selection (Hâgezi Multi Light, OISD Basic, StevenBlack, AdGuard DNS filter, Dan Pollock)
+- Add 5-minute pause snooze action to VPN persistent notification and replace harsh red notification tray tint with clean status colors
+- Add 1-tap quick action dialog and undo snackbar to DNS Request Log for faster rule management
+- Support wildcard and glob domain rule matching (* and ? patterns) directly in VPN mode
+- Add direct "Add to Obtainium" install button and badge to documentation
+
 ## [6.1.9] - 2026-10-10
 
 - Add Buy Me a Coffee support option for fork maintainer (@athanasso)
