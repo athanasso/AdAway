@@ -1,29 +1,19 @@
 <shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
     <shortcut
         android:enabled="true"
-        android:icon="@mipmap/shortcut_preferences"
-        android:shortcutDisabledMessage="@string/shortcut_preferences"
-        android:shortcutId="preferences"
-        android:shortcutLongLabel="@string/shortcut_preferences"
-        android:shortcutShortLabel="@string/shortcut_preferences">
-        <intent
-            android:action="android.intent.action.VIEW"
-            android:targetClass="org.adaway.ui.prefs.PrefsActivity"
-            android:targetPackage="org.adaway">
-        </intent>
-    </shortcut>
-    <shortcut
-        android:enabled="true"
         android:icon="@mipmap/shortcut_dns_requests"
         android:shortcutDisabledMessage="@string/shortcut_dns_requests"
         android:shortcutId="dns_requests"
         android:shortcutLongLabel="@string/shortcut_dns_requests"
         android:shortcutShortLabel="@string/shortcut_dns_requests">
         <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="org.adaway.ui.home.HomeActivity"
+            android:targetPackage="org.adaway" />
+        <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="org.adaway.ui.log.LogActivity"
-            android:targetPackage="org.adaway">
-        </intent>
+            android:targetPackage="org.adaway" />
     </shortcut>
     <shortcut
         android:enabled="true"
@@ -33,9 +23,44 @@
         android:shortcutLongLabel="@string/shortcut_your_lists"
         android:shortcutShortLabel="@string/shortcut_your_lists">
         <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="org.adaway.ui.home.HomeActivity"
+            android:targetPackage="org.adaway" />
+        <intent
             android:action="android.intent.action.VIEW"
             android:targetClass="org.adaway.ui.lists.ListsActivity"
-            android:targetPackage="org.adaway">
-        </intent>
+            android:targetPackage="org.adaway" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/shortcut_preferences"
+        android:shortcutDisabledMessage="@string/hosts_title"
+        android:shortcutId="hosts_sources"
+        android:shortcutLongLabel="@string/hosts_title"
+        android:shortcutShortLabel="@string/hosts_title">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="org.adaway.ui.home.HomeActivity"
+            android:targetPackage="org.adaway" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="org.adaway.ui.hosts.HostsSourcesActivity"
+            android:targetPackage="org.adaway" />
+    </shortcut>
+    <shortcut
+        android:enabled="true"
+        android:icon="@mipmap/shortcut_preferences"
+        android:shortcutDisabledMessage="@string/shortcut_preferences"
+        android:shortcutId="preferences"
+        android:shortcutLongLabel="@string/shortcut_preferences"
+        android:shortcutShortLabel="@string/shortcut_preferences">
+        <intent
+            android:action="android.intent.action.MAIN"
+            android:targetClass="org.adaway.ui.home.HomeActivity"
+            android:targetPackage="org.adaway" />
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetClass="org.adaway.ui.prefs.PrefsActivity"
+            android:targetPackage="org.adaway" />
     </shortcut>
 </shortcuts>
