@@ -1,4 +1,4 @@
-# ![AdAway logo](app/src/main/res/mipmap-mdpi/icon.png) AdAway (Fork by @athanasso)
+# ![AdAway logo](app/src/main/res/mipmap-mdpi/icon.png) AdAway Enhanced (@athanasso fork)
 
 [![GitHub Release](https://img.shields.io/github/v/release/athanasso/AdAway?logo=github)](https://github.com/athanasso/AdAway/releases)
 [![GitHub Downloads](https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github)](https://github.com/athanasso/AdAway/releases)
@@ -6,21 +6,25 @@
 [![Upstream: AdAway/AdAway](https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg)](https://github.com/AdAway/AdAway)
 
 > [!NOTE]
-> **Fork Notice (October 2026):**
-> This repository is an independent fork of the official [AdAway](https://github.com/AdAway/AdAway) project, maintained by [@athanasso](https://github.com/athanasso).
-> In compliance with the GNU General Public License v3 (§5a), this modified version documents key enhancements and fixes applied on top of upstream AdAway.
+> **AdAway Enhanced:**
+> This repository is an enhanced, actively maintained fork of the official [AdAway](https://github.com/AdAway/AdAway) project, developed by [@athanasso](https://github.com/athanasso).
+> In compliance with the GNU General Public License v3 (§5a), this modified version documents key enhancements, features, and fixes applied on top of upstream AdAway.
 
-AdAway is an open source ad blocker for Android using the hosts file and local vpn.
+AdAway Enhanced is an open source ad blocker for Android using the hosts file and local VPN.
 
-### Fork Enhancements & Fixes
+### Key Fork Enhancements & Features
 
+- **Material 3 Modernized UI**: Clean rounded card layout, integrated metrics iconography, high-contrast typography, and seamless status bar styling.
+- **Real-Time DNS Log Search**: Search bar filter in DNS Request Log activity with instant matching across domain names.
+- **Subdomain & Wildcard VPN Matching**: Parent domain hierarchical traversal for wildcard rule evaluation in VPN mode while respecting explicit allowlists.
+- **DNS Request Log Export**: One-tap share and export action in DNS log to easily pipe domains to blocklists or clipboard.
+- **Launcher App Shortcuts with Back Stack**: Quick-access app launcher shortcuts (DNS Logs, Your Lists, Hosts Sources, Preferences) with proper backstack navigation.
+- **Clean Notification Tray**: Disabled intrusive notification card colorization for a clean, non-discolored notification tray appearance.
 - **Dynamic Filter Download**: Bundled `hosts.txt` asset removed. Rules are downloaded dynamically on startup or when the source list is empty, reducing APK bloat and guaranteeing up-to-date hosts.
 - **Instant DNS Log Blocking**: Tapping "Block" in the DNS request log now persists immediately to user block rules and applies immediately without delays.
 - **Android 14+ Receiver Compatibility**: Fixed download complete `BroadcastReceiver` registration by explicitly specifying `RECEIVER_EXPORTED` on API 34+.
 - **VPN State Broadcast Sync**: Added `VpnStatusBroadcastReceiver` to `VpnModel` so the home UI reflects active VPN state changes in real time.
-- **Watchdog Timeout Reliability**: Only handle VPN watchdog timeouts when unresolved DNS queries or pending writes are actively queued.
-- **Pashto Localization Fix**: Aligned `drawer_items` string array length in `values-ps` to prevent runtime crashes.
-- **Version Catalog Modernization**: Migrated Sentry Android SDK dependencies into `libs.versions.toml`.
+- **Performance Optimization**: Eliminated synchronous SharedPreferences disk reads from Application.onCreate on the main thread.
 
 [<img src="metadata/en-US/phoneScreenshots/screenshot1.png"
     alt="Home screen"
