@@ -64,7 +64,7 @@ class LogAdapter extends ListAdapter<LogEntry, LogAdapter.ViewHolder> {
         LogEntry entry = getItem(position);
         // Set host name
         holder.binding.hostnameTextView.setText(entry.getHost());
-        holder.binding.hostnameTextView.setOnClickListener(v -> this.callback.openHostInBrowser(entry.getHost()));
+        holder.binding.hostnameTextView.setOnClickListener(v -> this.callback.onHostClick(entry));
         holder.binding.hostnameTextView.setOnLongClickListener(v -> {
             this.callback.copyHostToClipboard(entry.getHost());
             return true;

@@ -8,4 +8,14 @@
     <string name="log_sort_top_level_domain">Top level domain sort</string>
     <!-- Redirect dialog  -->
     <string name="log_redirect_dialog_title">Redirect domain</string>
+
+    <!-- Quick actions and feedback -->
+    <string name="log_action_block">Block domain</string>
+    <string name="log_action_allow">Allow domain</string>
+    <string name="log_action_copy">Copy domain</string>
+    <string name="log_action_browser">Open in browser</string>
+    <string name="log_button_undo">Undo</string>
+    <string name="log_domain_blocked">%1$s added to Blocked list</string>
+    <string name="log_domain_allowed">%1$s added to Allowed list</string>
+    <string name="log_domain_removed">%1$s removed</string>
 </resources>

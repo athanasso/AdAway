@@ -42,6 +42,7 @@ import androidx.lifecycle.ViewModelProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 
 import org.adaway.R;
 import org.adaway.databinding.LogActivityBinding;
@@ -210,6 +211,10 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
         if (type != ListType.REDIRECTED) {
             // Insert list item
             this.mViewModel.addListItem(hostName, type, null);
+            int messageRes = (type == ListType.BLOCKED) ? R.string.log_domain_blocked : R.string.log_domain_allowed;
+            Snackbar.make(this.binding.coordinator, getString(messageRes, hostName), Snackbar.LENGTH_LONG)
+                    .setAction(R.string.log_button_undo, v -> removeListItem(hostName))
+                    .show();
         } else {
             // Create dialog view
             LayoutInflater inflater = LayoutInflater.from(this);
@@ -230,6 +235,9 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
                                 if (RegexUtils.isValidIP(ip)) {
                                     // Insert list item
                                     this.mViewModel.addListItem(hostName, type, ip);
+                                    Snackbar.make(this.binding.coordinator, getString(R.string.log_domain_blocked, hostName), Snackbar.LENGTH_LONG)
+                                            .setAction(R.string.log_button_undo, v -> removeListItem(hostName))
+                                            .show();
                                 }
                             }
                     )
@@ -251,7 +259,38 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
     public void removeListItem(@NonNull String hostName) {
         if (this.mViewModel != null) {
             this.mViewModel.removeListItem(hostName);
+            Snackbar.make(this.binding.coordinator, getString(R.string.log_domain_removed, hostName), Snackbar.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onHostClick(@NonNull LogEntry entry) {
+        String host = entry.getHost();
+        CharSequence[] options = new CharSequence[]{
+                getString(R.string.log_action_block),
+                getString(R.string.log_action_allow),
+                getString(R.string.log_action_copy),
+                getString(R.string.log_action_browser)
+        };
+        new MaterialAlertDialogBuilder(this)
+                .setTitle(host)
+                .setItems(options, (dialog, which) -> {
+                    switch (which) {
+                        case 0:
+                            addListItem(host, ListType.BLOCKED);
+                            break;
+                        case 1:
+                            addListItem(host, ListType.ALLOWED);
+                            break;
+                        case 2:
+                            copyHostToClipboard(host);
+                            break;
+                        case 3:
+                            openHostInBrowser(host);
+                            break;
+                    }
+                })
+                .show();
     }
 
     @Override

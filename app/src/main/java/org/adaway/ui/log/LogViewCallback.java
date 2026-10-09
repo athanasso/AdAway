@@ -40,6 +40,13 @@ public interface LogViewCallback {
     void copyHostToClipboard(@NonNull String hostName);
 
     /**
+     * Handle item click for quick actions.
+     *
+     * @param entry The clicked log entry.
+     */
+    void onHostClick(@NonNull LogEntry entry);
+
+    /**
      * Get color value from color identifier.
      *
      * @param colorId The color identifier.
