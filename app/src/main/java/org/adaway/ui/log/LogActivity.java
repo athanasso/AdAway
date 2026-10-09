@@ -32,6 +32,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.SearchView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBar;
@@ -50,6 +51,8 @@ import org.adaway.helper.ThemeHelper;
 import org.adaway.ui.dialog.AlertDialogValidator;
 import org.adaway.util.Clipboard;
 import org.adaway.util.RegexUtils;
+
+import java.util.List;
 
 /**
  * This class is an {@link android.app.Activity} to show DNS request log entries.
@@ -164,7 +167,10 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.sort) {
+        if (item.getItemId() == R.id.share) {
+            shareLogs();
+            return true;
+        } else if (item.getItemId() == R.id.sort) {
             this.mViewModel.toggleSort();
             return true;
         } else if (item.getItemId() == R.id.delete) {
@@ -172,6 +178,26 @@ public class LogActivity extends AppCompatActivity implements LogViewCallback {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void shareLogs() {
+        if (this.mViewModel == null) {
+            return;
+        }
+        List<LogEntry> entries = this.mViewModel.getLogs().getValue();
+        if (entries == null || entries.isEmpty()) {
+            Toast.makeText(this, R.string.tcpdump_no_logs_to_share, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        StringBuilder builder = new StringBuilder();
+        for (LogEntry entry : entries) {
+            builder.append(entry.getHost()).append('\n');
+        }
+        Intent sendIntent = new Intent(Intent.ACTION_SEND);
+        sendIntent.putExtra(Intent.EXTRA_TEXT, builder.toString().trim());
+        sendIntent.setType("text/plain");
+        Intent shareIntent = Intent.createChooser(sendIntent, getString(R.string.tcpdump_menu_share));
+        startActivity(shareIntent);
     }
 
     @Override

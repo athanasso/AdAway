@@ -7,6 +7,11 @@
         app:actionViewClass="android.widget.SearchView"
         app:showAsAction="ifRoom|collapseActionView" />
     <item
+        android:id="@+id/share"
+        android:icon="@drawable/baseline_share_24"
+        android:title="@string/tcpdump_menu_share"
+        app:showAsAction="ifRoom" />
+    <item
         android:id="@+id/sort"
         android:icon="@drawable/baseline_sort_by_alpha_24"
         android:title="@string/tcpdump_menu_sort"

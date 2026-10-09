@@ -186,6 +186,8 @@
     <string name="tcpdump_show_results">Show results</string>
     <string name="tcpdump_menu_sort">Sort domains</string>
     <string name="tcpdump_menu_clear">Clear log</string>
+    <string name="tcpdump_menu_share">Share logs</string>
+    <string name="tcpdump_no_logs_to_share">No logs to share</string>
     <string name="tcpdump_entry_add_blacklist">Add entry to black list</string>
     <string name="tcpdump_entry_add_whitelist">Add entry to white list</string>
     <string name="tcpdump_entry_add_redirection_list">Add entry to redirect list</string>
