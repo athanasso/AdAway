@@ -129,21 +129,18 @@ class HostsSourcesAdapter extends ListAdapter<HostsSource, HostsSourcesAdapter.V
         boolean lastLocalModificationDefined = source.getLocalModificationDate() != null;
         // Declare update text
         String updateText;
-        // Check if last online modification date is known
-        if (lastOnlineModificationDefined) {
-            // Get last online modification delay
-            String approximateDelay = getApproximateDelay(context, source.getOnlineModificationDate());
-            if (!lastLocalModificationDefined) {
-                updateText = context.getString(R.string.hosts_source_last_update, approximateDelay);
-            } else if (source.getOnlineModificationDate().isAfter(source.getLocalModificationDate())) {
+        if (lastLocalModificationDefined) {
+            if (lastOnlineModificationDefined && source.getOnlineModificationDate().isAfter(source.getLocalModificationDate())) {
+                String approximateDelay = getApproximateDelay(context, source.getOnlineModificationDate());
                 updateText = context.getString(R.string.hosts_source_need_update, approximateDelay);
             } else {
+                String approximateDelay = getApproximateDelay(context, source.getLocalModificationDate());
                 updateText = context.getString(R.string.hosts_source_up_to_date, approximateDelay);
             }
         } else {
-            if (lastLocalModificationDefined) {
-                String approximateDelay = getApproximateDelay(context, source.getLocalModificationDate());
-                updateText = context.getString(R.string.hosts_source_installed, approximateDelay);
+            if (lastOnlineModificationDefined) {
+                String approximateDelay = getApproximateDelay(context, source.getOnlineModificationDate());
+                updateText = context.getString(R.string.hosts_source_last_update, approximateDelay);
             } else {
                 updateText = context.getString(R.string.hosts_source_unknown_status);
             }

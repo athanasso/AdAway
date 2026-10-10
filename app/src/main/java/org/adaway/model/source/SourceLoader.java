@@ -147,8 +147,20 @@ class SourceLoader {
         }
 
         private HostListItem parseHostListItem(String line) {
+            line = line.trim();
+            if (line.startsWith("||") && line.endsWith("^")) {
+                line = line.substring(2, line.length() - 1);
+            }
             Matcher matcher = HOSTS_PARSER_PATTERN.matcher(line);
             if (!matcher.matches()) {
+                if (RegexUtils.isValidHostname(line)) {
+                    HostListItem item = new HostListItem();
+                    item.setType(BLOCKED);
+                    item.setHost(line);
+                    item.setEnabled(true);
+                    item.setSourceId(this.source.getId());
+                    return item;
+                }
                 Timber.d("Does not match: %s.", line);
                 return null;
             }

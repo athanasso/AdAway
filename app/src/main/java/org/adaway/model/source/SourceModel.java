@@ -162,9 +162,10 @@ public class SourceModel {
             ZonedDateTime lastModifiedOnline = getHostsSourceLastUpdate(source);
             // Some help with debug here
             Timber.d("lastModifiedLocal: %s", dateToString(lastModifiedLocal));
-            Timber.d("lastModifiedOnline: %s", dateToString(lastModifiedOnline));
-            // Save last modified online
-            this.hostsSourceDao.updateOnlineModificationDate(source.getId(), lastModifiedOnline);
+            // Save last modified online only if successfully retrieved
+            if (lastModifiedOnline != null) {
+                this.hostsSourceDao.updateOnlineModificationDate(source.getId(), lastModifiedOnline);
+            }
             // Check if last modified online retrieved
             if (lastModifiedOnline == null) {
                 // If not, consider update is available if install is older than a week
@@ -348,8 +349,9 @@ public class SourceModel {
                         Timber.w("Hosts source type  is not supported.");
                 }
                 // Update local and online modification dates to now
-                localModificationDate = onlineModificationDate.isAfter(now) ? onlineModificationDate : now;
-                this.hostsSourceDao.updateModificationDates(sourceId, localModificationDate, onlineModificationDate);
+                localModificationDate = (onlineModificationDate != null && onlineModificationDate.isAfter(now)) ? onlineModificationDate : now;
+                ZonedDateTime effectiveOnlineDate = onlineModificationDate != null ? onlineModificationDate : localModificationDate;
+                this.hostsSourceDao.updateModificationDates(sourceId, localModificationDate, effectiveOnlineDate);
                 // Update size
                 this.hostsSourceDao.updateSize(sourceId);
             } catch (IOException e) {

@@ -33,7 +33,10 @@ public abstract class GitHostsJsonApiSource extends GitHostsSource {
     protected ZonedDateTime getLastUpdateFromApi(String commitApiUrl) {
         // Create client and request
         OkHttpClient client = new OkHttpClient();
-        Request request = new Request.Builder().url(commitApiUrl).build();
+        Request request = new Request.Builder()
+                .url(commitApiUrl)
+                .header("User-Agent", "AdAway")
+                .build();
         try (Response response = client.newCall(request).execute();
              ResponseBody body = response.body()) {
             if (response.isSuccessful()) {
