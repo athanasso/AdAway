@@ -59,6 +59,7 @@ public class VpnModel extends AdBlockModel {
     private final LruCache<String, HostEntry> blockCache;
     private final LinkedHashSet<String> logs;
     private volatile List<CompiledWildcardRule> wildcardRules = Collections.emptyList();
+    private volatile boolean active;
     private boolean recordingLogs;
     private int requestCount;
 
@@ -81,14 +82,16 @@ public class VpnModel extends AdBlockModel {
         this.logs = new LinkedHashSet<>();
         this.recordingLogs = false;
         this.requestCount = 0;
-        this.applied.postValue(VpnServiceControls.isRunning(context));
+        this.active = VpnServiceControls.isRunning(context);
+        this.applied.postValue(this.active);
         LocalBroadcastManager.getInstance(context).registerReceiver(new BroadcastReceiver() {
             @Override
             public void onReceive(Context context, Intent intent) {
                 Serializable extra = intent.getSerializableExtra(VpnService.VPN_UPDATE_STATUS_EXTRA);
                 if (extra instanceof VpnStatus) {
                     VpnStatus status = (VpnStatus) extra;
-                    applied.postValue(status == VpnStatus.RUNNING);
+                    active = (status == VpnStatus.RUNNING);
+                    applied.postValue(active);
                 }
             }
         }, new IntentFilter(VpnService.VPN_UPDATE_STATUS_INTENT));
@@ -107,6 +110,7 @@ public class VpnModel extends AdBlockModel {
         reloadWildcardRules();
         // Start VPN
         boolean started = VpnServiceControls.start(this.context);
+        this.active = started;
         this.applied.postValue(started);
         if (!started) {
             throw new HostErrorException(ENABLE_VPN_FAIL);
@@ -116,6 +120,7 @@ public class VpnModel extends AdBlockModel {
 
     @Override
     public void revert() {
+        this.active = false;
         VpnServiceControls.stop(this.context);
         this.applied.postValue(false);
     }
@@ -147,6 +152,9 @@ public class VpnModel extends AdBlockModel {
      * @return The related host entry.
      */
     public HostEntry getEntry(String host) {
+        if (!this.active || host == null) {
+            return null;
+        }
         // Compute miss rate periodically
         this.requestCount++;
         if (this.requestCount >= 1000) {
@@ -159,9 +167,6 @@ public class VpnModel extends AdBlockModel {
         // Add host to logs
         if (this.recordingLogs) {
             this.logs.add(host);
-        }
-        if (host == null) {
-            return null;
         }
         // Check exact match in cache
         HostEntry entry = this.blockCache.get(host);
