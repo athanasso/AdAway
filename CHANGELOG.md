@@ -1,5 +1,12 @@
 # Changelog
 
+## [6.2.1] - 2026-10-10
+
+- Fix ad-blocking leak during pause state by guaranteeing immediate DNS bypass and stopping background VPN worker reconnection
+- Fix false "outdated" source status on app re-open by preserving valid modification timestamps across application lifecycles
+- Support plain domain lists and Adblock/ABP format rules (`||domain^`) in hosts source loader
+- Add User-Agent header to Git JSON API requests to avoid GitHub API 403 Forbidden errors
+
 ## [6.2.0] - 2026-10-10
 
 - Add custom upstream DNS provider selection in VPN mode (Cloudflare, Quad9, AdGuard DNS, or custom IPv4 address)
