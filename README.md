@@ -1,11 +1,17 @@
 # ![AdAway logo](app/src/main/res/mipmap-mdpi/icon.png) AdAway Enhanced (@athanasso fork)
 
-[![GitHub Release](https://img.shields.io/github/v/release/athanasso/AdAway?logo=github)](https://github.com/athanasso/AdAway/releases)
-[![GitHub Downloads](https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github)](https://github.com/athanasso/AdAway/releases)
-[![Get in Obtainium](https://img.shields.io/badge/Get%20in-Obtainium-blue)](obtainium://add/https://github.com/athanasso/AdAway)
-[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-athanasso-yellow?logo=buy-me-a-coffee)](https://buymeacoffee.com/athanasso)
-[![License: GPL v3](https://img.shields.io/badge/License-GPL%20v3-blue.svg)](/LICENSE.md)
-[![Upstream: AdAway/AdAway](https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg)](https://github.com/AdAway/AdAway)
+<p align="center">
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/athanasso/AdAway"><img height="64" alt="Add to Obtainium" src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"></a>
+  <a href="https://buymeacoffee.com/athanasso"><img height="64" alt="Buy Me A Coffee" src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png"></a>
+</p>
+
+<p align="center">
+  <a href="https://github.com/athanasso/AdAway/releases"><img alt="GitHub Release" src="https://img.shields.io/github/v/release/athanasso/AdAway?logo=github"></a>
+  <a href="https://github.com/athanasso/AdAway/releases"><img alt="GitHub Downloads" src="https://img.shields.io/github/downloads/athanasso/AdAway/total?logo=github"></a>
+  <a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/athanasso/AdAway"><img alt="Get in Obtainium" src="https://img.shields.io/badge/Get%20in-Obtainium-blue"></a>
+  <a href="/LICENSE.md"><img alt="License: GPL v3" src="https://img.shields.io/badge/License-GPL%20v3-blue.svg"></a>
+  <a href="https://github.com/AdAway/AdAway"><img alt="Upstream: AdAway/AdAway" src="https://img.shields.io/badge/Upstream-AdAway%2FAdAway-lightgrey.svg"></a>
+</p>
 
 > [!NOTE]
 > **AdAway Enhanced:**
@@ -54,7 +60,7 @@ For more information visit https://adaway.org
 
 Pre-built signed release APKs are available directly on [GitHub Releases](https://github.com/athanasso/AdAway/releases).
 
-[![Get in Obtainium](https://img.shields.io/badge/Get%20in-Obtainium-blue?style=for-the-badge)](obtainium://add/https://github.com/athanasso/AdAway)
+<a href="https://apps.obtainium.imranr.dev/redirect?r=obtainium://add/https://github.com/athanasso/AdAway"><img height="64" alt="Add AdAway to Obtainium" src="https://raw.githubusercontent.com/ImranR98/Obtainium/main/assets/graphics/badge_obtainium.png"></a>
 
 ### Upstream Releases
 
